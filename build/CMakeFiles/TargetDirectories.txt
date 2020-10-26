@@ -1,0 +1,3 @@
+C:/Users/Tommy/OneDrive/Universidades/UNITEC/Ing. Sistemas Computacionales/Estructura de Datos I/arreglo/build/CMakeFiles/Array.dir
+C:/Users/Tommy/OneDrive/Universidades/UNITEC/Ing. Sistemas Computacionales/Estructura de Datos I/arreglo/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/Tommy/OneDrive/Universidades/UNITEC/Ing. Sistemas Computacionales/Estructura de Datos I/arreglo/build/CMakeFiles/ZERO_CHECK.dir

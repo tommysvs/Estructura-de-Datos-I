@@ -1,3 +1,3 @@
-# Estructura-de-Datos-I
+# Estructura de Datos I
 
-Trabajos, pruebas y exámenes.
+Trabajos, pruebas y exámenes de la clase.

@@ -13,7 +13,7 @@ class Nat {
         Nat operator+(const Nat& rhs);
         Nat operator-(const Nat& rhs);
 
-        unsigned Nat::value() const {
+        unsigned value() const {
             return i;
         }
 

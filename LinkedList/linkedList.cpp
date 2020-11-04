@@ -37,6 +37,50 @@ void LinkedList::pushFront(int data) {
     }
 }
 
+LinkedList::Node* LinkedList::find(int elem) {
+    Node* node  = head;
+
+    while(node != nullptr) {
+        if(node->data == elem) {
+            cout << "Element found" << endl;
+            return node;
+        }
+
+        node = node->next;
+    }
+
+    cout << "Element not found" << endl;
+    return nullptr;
+}
+
+LinkedList::Node* LinkedList::findMin() {
+    Node* node = head;
+    Node* min = head;
+
+    while(node != nullptr) {
+        if(node->data < min->data)
+            min = node;
+
+        node = node->next;
+    }
+
+    return min;
+}
+
+LinkedList::Node* LinkedList::findMax() {
+    Node* node = head;
+    Node* max = head;
+
+    while(node != nullptr) {
+        if(node->data > max->data)
+            max = node;
+
+        node = node->next;
+    }
+
+    return max;
+}
+
 void LinkedList::print() const
 {
     std::cout << "[ ";

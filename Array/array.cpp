@@ -33,7 +33,7 @@ Array<TElem>& Array<TElem>::operator=(const Array<TElem>& rhs) {
 }
 
 template<typename TElem>
-int Array<TElem>::find(TElem element) {
+int Array<TElem>::find(TElem element) const {
     for (int i = 0; i < size_; i++) {
         if (arr[i] == element)
             return i;
@@ -43,7 +43,7 @@ int Array<TElem>::find(TElem element) {
 }
 
 template<typename TElem>
-int Array<TElem>::findMinIndex(int pos) {
+int Array<TElem>::findMinIndex(int pos) const {
     int min = pos;
     for (int i = pos + 1; i < size_; i++) {
         if (arr[i] < arr[min])
@@ -53,7 +53,18 @@ int Array<TElem>::findMinIndex(int pos) {
     return min;
 }
 
-// Selection Sort
+template<typename TElem>
+int Array<TElem>::findMaxIndex(int pos) const {
+    int max = pos;
+    for(int i = pos + 1; i < size_; i++) {
+        if(arr[i] > arr[max])
+            max = i;
+    }
+
+    return max;
+}
+
+// Selection sort
 template<typename TElem>
 void Array<TElem>::sort() {
     for (int i = 0; i < size_; i++) {
@@ -64,8 +75,26 @@ void Array<TElem>::sort() {
     }
 }
 
+// Insertion sort
 template<typename TElem>
-void Array<TElem>::print() {
+void Array<TElem>::insertionSort() {
+    int j;
+
+    for(int i = 0; i < size_; i++) {
+        j = i;
+
+        while(j > 0 && arr[j - 1] > arr[j]) {
+            TElem temp = arr[j - 1];
+            arr[j - 1] = arr[j];
+            arr[j] = temp;
+
+            j--;
+        }
+    }
+}
+
+template<typename TElem>
+void Array<TElem>::print() const {
     std::cout << "[ ";
     bool first = true;
 
@@ -79,4 +108,13 @@ void Array<TElem>::print() {
     }
 
     std::cout << " ]";
+}
+
+template<typename TElem>
+void Array<TElem>::copyFrom(const Array& other) {
+    size_ = other.size_;
+    arr = new TElem[size_];
+
+    for(int i = 0; i < size_; i++)
+        arr[i] = other.arr[i];
 }

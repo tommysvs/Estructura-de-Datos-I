@@ -1,6 +1,5 @@
+#include <iostream>
 #include "Nat.h"
-
-using namespace std;
 
 Nat Nat::operator+(const Nat& rhs) {
     return Nat(i + rhs.i);
@@ -10,8 +9,8 @@ Nat Nat::operator-(const Nat& rhs) {
     return Nat(i - rhs.i);
 }
 
-ostream& operator<<(ostream& out, const Nat& nat) {
-    out << nat.i;
+std::ostream& operator<<(std::ostream& out, const Nat& nat) {
+    out << nat.value();
      
     return out;
 }

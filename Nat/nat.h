@@ -3,8 +3,6 @@
 
 #include <iosfwd>
 
-using namespace std;
-
 class Nat {
     public:
         Nat() : i(0) {}
@@ -17,7 +15,7 @@ class Nat {
             return i;
         }
 
-        friend ostream& operator<<(ostream& out, const Nat& nat);
+        friend std::ostream& operator<<(std::ostream& out, const Nat& nat);
     
     private:
         unsigned i;

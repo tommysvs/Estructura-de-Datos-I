@@ -23,7 +23,7 @@ class LinkedList {
         Node *findMin();
         Node *findMax();
 
-        friend ostream& operator << (ostream& out, const LinkedList& lst);
+        friend ostream& operator<<(ostream& out, const LinkedList& lst);
 
     private:
         Node *head;

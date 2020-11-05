@@ -2,9 +2,30 @@
 #include <sstream>
 #include "linked_list.h"
 
+template <typename TList>
+LinkedList<TList>::LinkedList(const std::initializer_list<TList>& init) : head(nullptr), tail(nullptr) {
+    for (auto d : init) {
+        if (head == nullptr)
+            pushFront(d);
+        else 
+            pushBack(d);
+    }
+}
+
+template <typename TList>
+LinkedList<TList>::~LinkedList() {
+    Node *next = nullptr;
+    Node *temp = head;
+        
+    while(next) {
+        temp = next;
+        next = next->next;
+        delete temp;
+    }
+}
+
 template<typename TList>
-int LinkedList<TList>::size() const
-{
+int LinkedList<TList>::size() const {
     Node *n = head;
     int sz = 0;
     while (n != nullptr)
@@ -17,8 +38,7 @@ int LinkedList<TList>::size() const
 }
 
 template<typename TList>
-void LinkedList<TList>::pushBack(int data)
-{
+void LinkedList<TList>::pushBack(TList data) {
     Node *newn = new Node(data);
     if (head == nullptr)
     {
@@ -32,8 +52,7 @@ void LinkedList<TList>::pushBack(int data)
 }
 
 template<typename TList>
-void LinkedList<TList>::pushFront(int data)
-{
+void LinkedList<TList>::pushFront(TList data) {
     Node *newn = new Node(data);
     if (head == nullptr)
     {
@@ -47,8 +66,7 @@ void LinkedList<TList>::pushFront(int data)
 }
 
 template<typename TList>
-std::string LinkedList<TList>::toString() const
-{
+std::string LinkedList<TList>::toString() const {
     std::ostringstream out;
     
     out << "[";
@@ -70,19 +88,35 @@ std::string LinkedList<TList>::toString() const
 
 template<typename TList>
 bool LinkedList<TList>::isSorted() const {
+    Node *current = head;
+    TList d = current->data;
+
+    while (current) {
+        if(d > current->data)
+            return false;
+
+        current = current->next;
+    }
+
     return true;
 }
 
 template<typename TList>
 void LinkedList<TList>::sort() {
-    Node* node = head;
-    Node* temp = nullptr;
-    int temp_data;
-    int size = size();
+    Node *current = head;
+    Node *next;
+    TList temp;
 
-    while(node != nullptr) {
-        temp = node;
+    while (current && current->next) {
+        next = current->next;
 
-        
+        while (next) {
+            if (current->data > next->data)
+                std::swap(next->data, current->data);
+
+            next = next->next;
+        }
+
+        current = current->next;
     }
 }

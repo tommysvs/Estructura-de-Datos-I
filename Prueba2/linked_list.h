@@ -8,9 +8,9 @@ class LinkedList {
 public:
     class Node {
     public:
-        Node(int val) : data(val), next(nullptr) {}
+        Node(TList val) : data(val), next(nullptr) {}
         
-        int data;
+        TList data;
         Node *next;
     };
 
@@ -19,21 +19,24 @@ public:
     LinkedList(const std::initializer_list<TList>& init);
     LinkedList(const LinkedList& other);
 
-    ~LinkedList() {}
+    ~LinkedList();
 
     std::string toString() const;
     int size() const;
-    void pushBack(int data);
-    void pushFront(int data);
+    void pushBack(TList data);
+    void pushFront(TList data);
 
     bool isSorted() const;
     void sort();
-
-    friend std::ostream& operator << (std::ostream& out, const LinkedList& lst);
+    
+    template <typename T>
+    friend std::ostream& operator << (std::ostream& out, const LinkedList<T>& lst);
 
 private:
     Node *head;
     Node *tail;
 };
+
+#include "linked_list.cpp"
 
 #endif

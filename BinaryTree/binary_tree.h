@@ -21,8 +21,6 @@ class BinarySearchTree {
         BinarySearchTree() : root(nullptr) {}
         ~BinarySearchTree() {}
 
-        void add(Node *n);
-        
         void insert(TElem data);
         Node *find(TElem data);
         void print();
@@ -46,6 +44,6 @@ class BinarySearchTree {
         Node *root;
 };
 
-#include "binarySearchTree.cpp"
+#include "binary_tree.cpp"
 
 #endif

@@ -2,31 +2,37 @@
 #define _EXPR_BINARY_TREE_H
 
 #include <string>
+#include <memory>
 
 enum NodeKind {
     Add, Sub, Mul, Div, Number
 };
 
+class Expr;
+using ExprPtr = std::shared_ptr<Expr>;
+
 class Expr {
     public:
         virtual std::string toString() const = 0;
         virtual NodeKind kind() const = 0;
+        virtual ~Expr() {}
 
     protected:
         Expr() = default;
 };
 
 class BinaryExpr : public Expr {
-    public:
-        BinaryExpr(Expr *expr1, Expr *expr2) : left(expr1), right(expr2) {}
+    protected:
+        BinaryExpr(const ExprPtr& expr1, const ExprPtr& expr2) : left(expr1), right(expr2) {}
 
-        Expr *left;
-        Expr *right;
+    public:
+        ExprPtr left;
+        ExprPtr right;
 };
 
 class AddExpr : public BinaryExpr {
     public:
-        AddExpr(Expr *expr1, Expr *expr2) : BinaryExpr(expr1, expr2) {}
+        AddExpr(const ExprPtr& expr1, const ExprPtr& expr2) : BinaryExpr(expr1, expr2) {}
 
         NodeKind kind() const override {
             return NodeKind::Add;
@@ -39,7 +45,7 @@ class AddExpr : public BinaryExpr {
 
 class SubExpr : public BinaryExpr {
     public:
-        SubExpr(Expr *expr1, Expr *expr2) : BinaryExpr(expr1, expr2) {}
+        SubExpr(const ExprPtr& expr1, const ExprPtr& expr2) : BinaryExpr(expr1, expr2) {}
 
         NodeKind kind() const override {
             return NodeKind::Sub;
@@ -52,7 +58,7 @@ class SubExpr : public BinaryExpr {
 
 class MulExpr : public BinaryExpr {
     public:
-        MulExpr(Expr *expr1, Expr *expr2) : BinaryExpr(expr1, expr2) {}
+        MulExpr(const ExprPtr& expr1, const ExprPtr& expr2) : BinaryExpr(expr1, expr2) {}
 
         NodeKind kind() const override {
             return NodeKind::Mul;
@@ -65,7 +71,7 @@ class MulExpr : public BinaryExpr {
 
 class DivExpr : public BinaryExpr {
     public:
-        DivExpr(Expr *expr1, Expr *expr2) : BinaryExpr(expr1, expr2) {}
+        DivExpr(const ExprPtr& expr1, const ExprPtr& expr2) : BinaryExpr(expr1, expr2) {}
 
         NodeKind kind() const override {
             return NodeKind::Div;

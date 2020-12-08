@@ -24,29 +24,29 @@ std::string PostfixGen::toPostfix(Expr *expr) {
 }
 
 std::string PostfixGen::visit(AddExpr *expr) {
-    std::string lp = toPostfix(expr->left);
-    std::string rp = toPostfix(expr->right);
+    std::string lp = toPostfix(expr->left.get());
+    std::string rp = toPostfix(expr->right.get());
 
     return lp + " " + rp + " +";
 }
 
 std::string PostfixGen::visit(SubExpr *expr) {
-    std::string lp = toPostfix(expr->left);
-    std::string rp = toPostfix(expr->right);
+    std::string lp = toPostfix(expr->left.get());
+    std::string rp = toPostfix(expr->right.get());
 
     return lp + " " + rp + " -";
 }
 
 std::string PostfixGen::visit(MulExpr *expr) {
-    std::string lp = toPostfix(expr->left);
-    std::string rp = toPostfix(expr->right);
+    std::string lp = toPostfix(expr->left.get());
+    std::string rp = toPostfix(expr->right.get());
 
     return lp + " " + rp + " *";
 }
 
 std::string PostfixGen::visit(DivExpr *expr) {
-    std::string lp = toPostfix(expr->left);
-    std::string rp = toPostfix(expr->right);
+    std::string lp = toPostfix(expr->left.get());
+    std::string rp = toPostfix(expr->right.get());
 
     return lp + " " + rp + " /";
 }

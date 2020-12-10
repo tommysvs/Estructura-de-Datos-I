@@ -4,41 +4,57 @@
 int main() {
     Graph g;
 
-    Graph::Node na("A");
-    Graph::Node nb("B");
-    Graph::Node nc("C");
-    Graph::Node nd("D");
-    Graph::Node ne("E");
+    g.addNode(0, "A");
+    g.addNode(1, "B");
+    g.addNode(2, "C");
+    g.addNode(3, "D");
+    g.addNode(4, "E");
+
+    Graph::Node *pna = g.nodeById(0);
+    Graph::Node *pnb = g.nodeById(1);
+    Graph::Node *pnc = g.nodeById(2);
+    Graph::Node *pnd = g.nodeById(3);
+    Graph::Node *pne = g.nodeById(4);
 
     //Node A
-    na.addTrans(&nb, 100);
-    na.addTrans(&nc, 10);
-    na.addTrans(&nd, 5);
+    pna->addEdge(pna, 100);
+    pna->addEdge(pnc, 10);
+    pna->addEdge(pnd, 5);
 
     //Node B
-    nb.addTrans(&na, 100);
-    nb.addTrans(&nc, 20);
-    nb.addTrans(&ne, 100);
+    pnb->addEdge(pna, 100);
+    pnb->addEdge(pnc, 20);
+    pnb->addEdge(pne, 100);
 
     //Node C
-    nc.addTrans(&nb, 10);
-    nc.addTrans(&nc, 20);
-    nc.addTrans(&nd, 20);
+    pnc->addEdge(pna, 10);
+    pnc->addEdge(pnb, 20);
+    pnc->addEdge(pne, 20);
 
     //Node D
-    nd.addTrans(&nb, 5);
-    nd.addTrans(&nc, 20);
+    pnd->addEdge(pna, 5);
+    pnd->addEdge(pne, 20);
 
-    //Node A
-    ne.addTrans(&nb, 100);
-    ne.addTrans(&nc, 20);
-    ne.addTrans(&nd, 20);
+    //Node E
+    pne->addEdge(pnb, 100);
+    pne->addEdge(pnc, 20);
+    pne->addEdge(pnd, 20);
 
-    g.nodes.push_back(na);
-    g.nodes.push_back(nb);
-    g.nodes.push_back(nc);
-    g.nodes.push_back(nd);
-    g.nodes.push_back(ne);
+    g.genDotOutput();
 
-    g.print();
+    std::vector<long> costv;
+    std::vector<long> pathv;
+    g.dijsktra(0, costv, pathv);
+
+    for(long cost : costv) {
+        std::cout << "Min cost: " << cost << '\n';
+    }
+
+    for(long p : pathv) {
+        if(p < 0) 
+            continue;
+
+        Graph::Node *n = g.nodeById(p);
+        std::cout << "Path: " << n->label << '\n';
+    }
 }

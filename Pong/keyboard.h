@@ -1,18 +1,15 @@
 #ifndef _KEYBOARD_H
 #define _KEYBOARD_H
 
-#define ENTER 13
-#define WMINUS 119
-#define WMAYUS 87
-#define SMINUS 115
-#define SMAYUS 83
-#define OMINUS 111
-#define OMAYUS 79
-#define LMINUS 108
-#define LMAYUS 76
+#define Q 113
+#define A 97
+#define O 111
+#define L 108
 
 #include <termios.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 static struct termios old, neww;
 
@@ -55,6 +52,31 @@ class Keyboard {
                 t = 1000 + getch();
             
             return t;
+        }
+
+        int kbhit(void) {
+            struct termios oldt, newt;
+            int ch;
+            int oldf;
+            
+            tcgetattr(STDIN_FILENO, &oldt);
+            newt = oldt;
+            newt.c_lflag &= ~(ICANON | ECHO);
+            tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+            oldf = fcntl(STDIN_FILENO, F_GETFL, 0);
+            fcntl(STDIN_FILENO, F_SETFL, oldf | O_NONBLOCK);
+            
+            ch = getchar();
+            
+            tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+            fcntl(STDIN_FILENO, F_SETFL, oldf);
+            
+            if(ch != EOF) {
+                ungetc(ch, stdin);
+                return 1;
+            }
+            
+            return 0;
         }
 };
 

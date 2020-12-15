@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "keyboard.h"
+#include "score.h"
 
 #define SCRN_W 100
 #define SCRN_H 25
@@ -12,6 +13,9 @@ enum class GAMESTATE {
 };
 
 class Game {
+    private:
+        Score s1, s2;
+
     public:
         void game_limit();
         void game_menu();

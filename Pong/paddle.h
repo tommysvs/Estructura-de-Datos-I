@@ -2,6 +2,10 @@
 #define _PADDLE_H
 
 class Paddle {
+    private:
+        Game gp;
+        int x, y;
+
     public:
         Paddle(int _x, int _y) : x(_x), y(_y) { }
 
@@ -19,10 +23,7 @@ class Paddle {
 
         void draw();
         void del(); 
-
-    private:
-        Game gp;
-        int x, y;
+        void cpu(int _x, int _y, int _dx);
 };
 
 #include "paddle.cpp"

@@ -2,6 +2,10 @@
 #define _BALL_H
 
 class Ball {
+    private:
+        Game gb;
+        int x, y, dx, dy;
+
     public:
         Ball(int _x, int _y, int _dx, int _dy) : x(_x), y(_y), dx(_dx), dy(_dy) { }
 
@@ -14,9 +18,17 @@ class Ball {
             y = _y;
         }
 
-    private:
-        Game gb;
-        int x, y, dx, dy;
+        int get_x() {
+            return x;
+        }
+
+        int get_y() {
+            return y;
+        }
+
+        int get_dx() {
+            return dx;
+        }
 };
 
 #include "ball.cpp"

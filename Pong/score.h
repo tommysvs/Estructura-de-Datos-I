@@ -2,12 +2,13 @@
 #define _SCORE_H
 
 class Score {
+    private:
+        int score;
+
     public:
         int get_score() {
             return score;
         }
-    private:
-        int score;
 };
 
 #endif

@@ -2,9 +2,8 @@ static GAMESTATE state;
 
 void Game::game_limit() {
     clear();
-    hide();
 
-    int i, j, k; 
+    int i, j, k, l; 
 
     for (i = 1; i <= SCRN_H; i++) {  
         for (j = 1; j <= SCRN_W; j++) {  
@@ -50,7 +49,7 @@ void Game::game_menu() {
     };
 
     for(i = 0; i < 15; i++) {
-        gotoxy(30, i + 5);
+        gotoxy(30, i + 4);
 
         for(j = 0; j < 100; j++) {
             std::cout << intro[i][j];
@@ -59,29 +58,26 @@ void Game::game_menu() {
         std::cout << "\n";
     }
 
-    gotoxy(32, 22);
+    gotoxy(32, 21);
     std::cout << "1. Start playing.";
-    gotoxy(56, 22);
+    gotoxy(56, 21);
     std::cout << "2. Quit game.";
-    gotoxy(50, 24);
+    gotoxy(50, 23);
     std::cout << "> ";
     std::cin >> option;
 
     if(option == 1) 
         game_start();
-    if(option == 2) {
+    else if(option == 2) {
         close();
         clear();
-    }
-    if(option != 1 && option != 2) {
-        gotoxy(43, 272);
-        std::cout << "Option not valid." << std::endl;
     }
 }
 
 void Game::game_start() {
     state = GAMESTATE::START;
 
+    hide();
     game_limit();
 
     gotoxy(47, 2);
@@ -95,7 +91,6 @@ void Game::game_start() {
 
 void Game::game_lose() {
     state = GAMESTATE::LOSE;
-    Score s1, s2;
     int p1_s = s1.get_score();
     int p2_2 = s2.get_score();
 

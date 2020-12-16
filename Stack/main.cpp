@@ -1,26 +1,17 @@
 #include <iostream>
+#include <string>
 #include "stack.h"
 
 int main() {
-    Stack<int> s1;
+    Stack<int> s;
 
-    s1.push(10);
-    s1.push(20);
-    s1.push(30);
-    s1.push(40);
+    std::string in_exp, p_exp;
 
-    std::cout << s1.pop() << std::endl;
-    std::cout << s1.pop() << std::endl;
-    std::cout << s1.pop() << std::endl;
-    std::cout << s1.pop() << std::endl;
+    //std::cout << "Enter infix expression: ";
+    //std::cin >> in_exp;
+    in_exp = "((3+4)*2)/7";
 
-    Stack<const char*> s2;
-    
-    s2.push("first");
-    s2.push("second");
-    s2.push("third");
-
-    std::cout << s2.pop() << std::endl;
-    std::cout << s2.pop() << std::endl;
-    std::cout << s2.pop() << std::endl;
+    p_exp = s.infixToPostfix(in_exp);
+    std::cout << "\nPostfix expression: " << p_exp << std::endl;
+    std::cout << "Postfix evaluation: " << s.evaluatePostfix("34+2*7/") << std::endl;
 }

@@ -5,8 +5,6 @@
 #include <vector>
 #include <string>
 
-void testSort(const std::string& desc,
-              std::vector<unsigned>& numbers,
-              std::function<void(std::vector<unsigned>&)> sort_alg);
+void testSort(const std::string& desc, std::vector<unsigned>& numbers, std::function<void(std::vector<unsigned>&)> sort_alg);
 
 #endif

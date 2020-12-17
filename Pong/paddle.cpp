@@ -1,4 +1,7 @@
+#include "paddle.h"
+
 void Paddle::draw() {
+    Game gp;
     int pad = 35;
 
     gp.gotoxy(x, y - 1);
@@ -12,6 +15,7 @@ void Paddle::draw() {
 }
 
 void Paddle::del() {
+    Game gp;
     gp.gotoxy(x, y - 1);
     std::cout << " ";
 

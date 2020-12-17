@@ -1,9 +1,11 @@
 #ifndef _BALL_H
 #define _BALL_H
 
+#include "game.h"
+
+class Paddle;
 class Ball {
     private:
-        Game gb;
         int x, y, dx, dy;
 
     public:
@@ -30,7 +32,5 @@ class Ball {
             return dx;
         }
 };
-
-#include "ball.cpp"
 
 #endif

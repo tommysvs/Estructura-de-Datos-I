@@ -1,7 +1,14 @@
+#include "game.h"
+
 static GAMESTATE state;
 
+Score s1, s2, scpu;
+int p1_s = s1.get_sp1();
+int p2_s = s2.get_sp2();
+int cpu_s = scpu.get_scpu();
+
 void Game::game_limit() {
-    clear();
+    rlutil::cls();
 
     int i, j, k, l; 
 
@@ -16,10 +23,25 @@ void Game::game_limit() {
         std::cout << std::endl; 
     }
 
-    if(state == GAMESTATE::START) {
+    if(state == GAMESTATE::PLAYER || state == GAMESTATE::CPU) {
+        gotoxy(47, 2);
+        std::cout << "SCORES";
+
         gotoxy(2, 4);
         for(k = 1; k < SCRN_W - 1; k++) {
             std::cout << "-";
+        }
+
+        if(state == GAMESTATE::PLAYER) {
+            gotoxy(30, 3);
+            std::cout << "Player 1: " << p1_s;
+            gotoxy(60, 3);
+            std::cout << "Player 2: " << p2_s;
+        }else if(state == GAMESTATE::CPU) {
+            gotoxy(30, 3);
+            std::cout << "Player: " << p1_s;
+            gotoxy(60, 3);
+            std::cout << "CPU: " << cpu_s;
         }
     }
 }
@@ -61,44 +83,78 @@ void Game::game_menu() {
     gotoxy(32, 21);
     std::cout << "1. Start playing.";
     gotoxy(56, 21);
-    std::cout << "2. Quit game.";
-    gotoxy(50, 23);
-    std::cout << "> ";
-    std::cin >> option;
+    std::cout << "2. Play with CPU.";
+    
+    while(option != 1 && option != 2) {
+        gotoxy(50, 23);
+        std::cout << "> ";
+        std::cin >> option;
+    }
 
     if(option == 1) 
-        game_start();
-    else if(option == 2) {
-        close();
-        clear();
-    }
+        state = GAMESTATE::PLAYER;
+    else if(option == 2)
+        state = GAMESTATE::CPU;
+
+    game_start();
 }
 
 void Game::game_start() {
-    state = GAMESTATE::START;
-
-    hide();
+    rlutil::hidecursor();
     game_limit();
 
-    gotoxy(47, 2);
-    std::cout << "SCORES";
+    Paddle p1(5, 12);
+    p1.draw();
+    Paddle p2(95, 12);
+    p2.draw();
+    Ball b(50, 12, 1, 1);
 
-    gotoxy(30, 3);
-    std::cout << "Player 1:";
-    gotoxy(60, 3);
-    std::cout << "Player 2:";
+    Keyboard k;
+    int key;
+    int c = 0;
+
+    while(p1_s != 3 || p2_s != 3 || cpu_s != 3) {
+        if(k.kbhit()) {
+            p1.del();
+            p2.del();
+
+            key = k.key();
+
+            if(key == Q && p1.get_y() > 6)
+                p1.move_y(-1);
+            else if(key == A && p1.get_y() < 23)
+                p1.move_y(1);
+
+            p1.draw();
+
+            if(state == GAMESTATE::PLAYER) {
+                if(key == O && p2.get_y() > 6)
+                    p2.move_y(-1);
+                else if(key == L && p2.get_y() < 23)
+                    p2.move_y(1);
+
+                p2.draw();
+            }
+        }
+
+        if(state == GAMESTATE::CPU) {
+            if(!c)
+                p2.cpu(b.get_x(), b.get_y(), b.get_dx());
+        }
+      
+        if(!c++)
+            b.move(p1, p2);
+        
+        if(c > 13000)
+            c = 0;
+    }
+
+    if(p1_s == 3 || p2_s == 3 || cpu_s == 3)
+        game_lose();
 }
 
 void Game::game_lose() {
-    state = GAMESTATE::LOSE;
-    int p1_s = s1.get_score();
-    int p2_2 = s2.get_score();
-
-    game_limit();
+    state == GAMESTATE::LOSE;
     
-    gotoxy(12, 40);
-    if(p1_s == 5)
-        std::cout << "Player 1 LOSE!";
-    else if(p2_2 == 5)
-        std::cout << "Player 2 LOSE!";
+
 }

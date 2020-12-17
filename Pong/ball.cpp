@@ -1,4 +1,7 @@
+#include "ball.h"
+
 void Ball::draw() {
+    Game gb;
     int ball = 64;
 
     gb.gotoxy(x, y);
@@ -6,6 +9,8 @@ void Ball::draw() {
 }
 
 void Ball::del() {
+    Game gb;
+
     gb.gotoxy(x, y);
     std::cout << " ";
 }
@@ -30,4 +35,5 @@ void Ball::move(Paddle p1, Paddle p2) {
 
     if(x + dx == p2.get_x() && y >= p2.get_y() -2 && y <= p2.get_y() + 2) 
         dx = -dx;
+
 }

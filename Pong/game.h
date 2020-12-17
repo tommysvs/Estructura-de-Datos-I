@@ -2,19 +2,22 @@
 #define _GAME_H_
 
 #include <iostream>
+#include "rlutil.h"
 #include "keyboard.h"
 #include "score.h"
+#include "paddle.h"
+#include "ball.h"
 
 #define SCRN_W 100
 #define SCRN_H 25
 
 enum class GAMESTATE {
-    MENU, START, LOSE
+    MENU, PLAYER, CPU, LOSE
 };
 
 class Game {
     private:
-        Score s1, s2;
+        Score s1, s2, scpu;
 
     public:
         void game_limit();
@@ -22,15 +25,9 @@ class Game {
         void game_start();
         void game_lose();
 
-        void clear() { system("clear"); }
-        void close() { system("exit"); }
-        void hide() { system("setterm -cursor off"); }
-
         void gotoxy(int x, int y) {
             printf("%c[%d;%df", 0x1B, y, x);
         }
 };
-
-#include "game.cpp"
 
 #endif

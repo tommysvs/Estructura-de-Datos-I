@@ -1,9 +1,10 @@
 #ifndef _PADDLE_H
 #define _PADDLE_H
 
+#include "game.h"
+
 class Paddle {
     private:
-        Game gp;
         int x, y;
 
     public:
@@ -25,7 +26,5 @@ class Paddle {
         void del(); 
         void cpu(int _x, int _y, int _dx);
 };
-
-#include "paddle.cpp"
 
 #endif

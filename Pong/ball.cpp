@@ -17,6 +17,8 @@ void Ball::del() {
 }
 
 void Ball::move(Paddle left, Paddle right) {
+    rlutil::hidecursor();
+
     del();
     x += dx;
     y += dy;

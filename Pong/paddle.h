@@ -24,7 +24,6 @@ class Paddle {
 
         void draw();
         void del(); 
-        void cpu(int _x, int _y, int _dx);
 };
 
 #endif

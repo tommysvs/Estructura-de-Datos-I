@@ -5,6 +5,8 @@
 #define A 97
 #define O 111
 #define L 108
+#define R 114
+#define ENTER 13
 
 #include <termios.h>
 #include <stdio.h>

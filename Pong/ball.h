@@ -2,6 +2,7 @@
 #define _BALL_H
 
 #include "game.h"
+#include "score.h"
 
 class Paddle;
 class Ball {
@@ -13,7 +14,7 @@ class Ball {
 
         void draw();
         void del();
-        void move(Paddle p1, Paddle p2);
+        void move(Paddle left, Paddle right);
 
         void assign_coord(int _x, int _y) {
             x = _x;

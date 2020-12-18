@@ -41,14 +41,6 @@ int main(int argc, char *argv[])
 
     in.close();
 
-    Sorting obj;
-
-    std::function<void(std::vector<unsigned int, std::allocator<unsigned int>>&)> cppSort;
-    std::function<void(std::vector<unsigned int, std::allocator<unsigned int>>&)> selectionSort;
-    std::function<void(std::vector<unsigned int, std::allocator<unsigned int>>&)> bubbleSort;
-    std::function<void(std::vector<unsigned int, std::allocator<unsigned int>>&)> insertionSort;
-    std::function<void(std::vector<unsigned int, std::allocator<unsigned int>>&)> quickSort;
-
     testSort("CPP Sort", numbers_cs, cppSort);
     testSort("Selection Sort", numbers_ss, selectionSort);
     testSort("Bubble Sort", numbers_bs, bubbleSort);

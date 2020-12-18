@@ -1,36 +1,36 @@
 #ifndef _SCORE_H
 #define _SCORE_H
 
+#include "game.h"
+#include "ball.h"
+
+class Ball;
 class Score {
     private:
-        int s_p1 = 0;
-        int s_p2 = 0; 
-        int s_cpu = 0;
+        int left, right;
+        int x, y;
 
     public:
-        void set_sp1() {
-            s_p1++;
+        Score() {}
+
+        Score(int _x, int _y) : x(_x), y(_y) { 
+            left = 0;
+            right = 0;
+        }
+    
+        int get_left() {
+            return left;
         }
 
-        void set_sp2() {
-            s_p2++;
+        int get_right() {
+            return right;
         }
 
-        void set_scpu() {
-            s_cpu++;
-        }
-
-        int get_sp1() {
-            return s_p1;
-        }
-
-        int get_sp2() {
-            return s_p2;
-        }
-
-        int get_scpu() {
-            return s_cpu;
-        }
+        void del();
+        void draw_left();
+        void draw_right();
+        void update_left(int bx, int bdx);
+        void update_right(int bx, int bdx);
 };
 
 #endif

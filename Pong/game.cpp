@@ -1,48 +1,24 @@
+#include <fstream>
 #include "game.h"
 
 static GAMESTATE state;
 
-Score s1, s2, scpu;
-int p1_s = s1.get_sp1();
-int p2_s = s2.get_sp2();
-int cpu_s = scpu.get_scpu();
-
 void Game::game_limit() {
     rlutil::cls();
+    rlutil::setColor(3);
+    rlutil::hidecursor();
 
-    int i, j, k, l; 
+    int i, j, k;
 
     for (i = 1; i <= SCRN_H; i++) {  
         for (j = 1; j <= SCRN_W; j++) {  
             if (i == 1 || i == SCRN_H || j == 1 || j == SCRN_W)          
-                std::cout << "*";              
+                std::cout << "*";    
             else
                 std::cout << " "; 
         }  
 
         std::cout << std::endl; 
-    }
-
-    if(state == GAMESTATE::PLAYER || state == GAMESTATE::CPU) {
-        gotoxy(47, 2);
-        std::cout << "SCORES";
-
-        gotoxy(2, 4);
-        for(k = 1; k < SCRN_W - 1; k++) {
-            std::cout << "-";
-        }
-
-        if(state == GAMESTATE::PLAYER) {
-            gotoxy(30, 3);
-            std::cout << "Player 1: " << p1_s;
-            gotoxy(60, 3);
-            std::cout << "Player 2: " << p2_s;
-        }else if(state == GAMESTATE::CPU) {
-            gotoxy(30, 3);
-            std::cout << "Player: " << p1_s;
-            gotoxy(60, 3);
-            std::cout << "CPU: " << cpu_s;
-        }
     }
 }
 
@@ -52,6 +28,7 @@ void Game::game_menu() {
 
     int i, j, option;
     
+    rlutil::setColor(3);
     char intro[15][100] = {
         "     █████████                              ",
         "   █████████████                            ",
@@ -70,91 +47,169 @@ void Game::game_menu() {
         "   ████    █████    ███    ███   █████ █    "
     };
 
+
     for(i = 0; i < 15; i++) {
         gotoxy(30, i + 4);
 
-        for(j = 0; j < 100; j++) {
+        for(j = 0; j < 100; j++)
             std::cout << intro[i][j];
-        }
 
         std::cout << "\n";
     }
 
-    gotoxy(32, 21);
-    std::cout << "1. Start playing.";
-    gotoxy(56, 21);
-    std::cout << "2. Play with CPU.";
+    rlutil::setColor(15);
+    gotoxy(39, 21);
+    std::cout << "Press 1 to start playing.";
     
-    while(option != 1 && option != 2) {
-        gotoxy(50, 23);
+    while(option != 1) {
+        gotoxy(49, 23);
         std::cout << "> ";
         std::cin >> option;
     }
-
-    if(option == 1) 
-        state = GAMESTATE::PLAYER;
-    else if(option == 2)
-        state = GAMESTATE::CPU;
 
     game_start();
 }
 
 void Game::game_start() {
-    rlutil::hidecursor();
+    state = GAMESTATE::START;
     game_limit();
 
-    Paddle p1(5, 12);
-    p1.draw();
-    Paddle p2(95, 12);
-    p2.draw();
+    Paddle left(4, 12);
+    left.draw();
+    Paddle right(97, 12);
+    right.draw();
     Ball b(50, 12, 1, 1);
+    Score s1(25, 3);
+    s1.draw_left();
+    Score s2(75, 3);
+    s2.draw_right();
 
     Keyboard k;
     int key;
     int c = 0;
 
-    while(p1_s != 3 || p2_s != 3 || cpu_s != 3) {
+    while(s1.get_left() != 3 && s2.get_right() != 3) {
         if(k.kbhit()) {
-            p1.del();
-            p2.del();
+            left.del();
+            right.del();
 
             key = k.key();
 
-            if(key == Q && p1.get_y() > 6)
-                p1.move_y(-1);
-            else if(key == A && p1.get_y() < 23)
-                p1.move_y(1);
+            if(key == Q && left.get_y() > 3)
+                left.move_y(-1);
+            else if(key == A && left.get_y() < 23)
+                left.move_y(1);
 
-            p1.draw();
+            left.draw();
 
-            if(state == GAMESTATE::PLAYER) {
-                if(key == O && p2.get_y() > 6)
-                    p2.move_y(-1);
-                else if(key == L && p2.get_y() < 23)
-                    p2.move_y(1);
+            if(key == O && right.get_y() > 3)
+                right.move_y(-1);
+            else if(key == L && right.get_y() < 23)
+                right.move_y(1);
 
-                p2.draw();
-            }
+            right.draw();
         }
 
-        if(state == GAMESTATE::CPU) {
-            if(!c)
-                p2.cpu(b.get_x(), b.get_y(), b.get_dx());
+        if(!c) {
+            s1.update_left(b.get_x(), b.get_dx());
+            s2.update_right(b.get_x(), b.get_dx());
         }
-      
-        if(!c++)
-            b.move(p1, p2);
+
+        if(!c++) {
+            draw_line();
+            b.move(left, right);
+        }
         
-        if(c > 13000)
+        if(c > 15000)
             c = 0;
+
+        if(s1.get_left() == 3)
+            left_won = true;
+        
+        if(s2.get_right() == 3)
+            right_won = true;
     }
 
-    if(p1_s == 3 || p2_s == 3 || cpu_s == 3)
-        game_lose();
+    Records rec;
+    rec.score_left = s1.get_left();
+    rec.score_right = s2.get_right();
+    rec.n_left = "LEFT";
+    rec.n_right = "RIGHT";
+
+    std::string record_s = rec.n_left + " " + std::to_string(rec.score_left) + " - " + std::to_string(rec.score_right) + " " + rec.n_right;
+    if(record.empty()) {
+        record.push_back(record_s);
+    }
+
+    save_scores();
+    game_lose();
 }
 
 void Game::game_lose() {
     state == GAMESTATE::LOSE;
-    
+    game_limit();
 
+    Score s;
+    Keyboard k;
+
+    gotoxy(44, 4); 
+    rlutil::setColor(12);
+    if(left_won)
+        std::cout << "RIGHT LOSE!";
+    else if(right_won)
+        std::cout << "LEFT LOSE!";
+
+    gotoxy(44, 11);
+    rlutil::setColor(15);
+    std::cout << "HIGH SCORES";
+
+    read_scores();
+
+    gotoxy(37, 23);
+    rlutil::setColor(15);
+    std::cout << "Press any key to continue";
+
+    k.getch();
+    game_menu();
+}
+
+void Game::save_scores() {
+    std::ofstream scoresSave("scores.dat", std::ios::app);
+
+    if(!scoresSave) {
+        gotoxy(43, 13);
+        rlutil::setColor(15);
+        std::cout << "Cannot open file.";
+        return;
+    }
+
+    for(int i = 0; i < record.size(); i++) {
+        scoresSave << record[i] << std::endl;
+    }
+
+    scoresSave.close();
+}
+
+void Game::read_scores() {
+    std::ifstream scoresRead("scores.dat", std::ios::in);
+
+    if(!scoresRead) {
+        gotoxy(43, 13);
+        rlutil::setColor(15);
+        std::cout << "Cannot open file.";
+        return;
+    }
+
+    std::string get_scores;
+
+    int i = 0;
+    if(scoresRead.is_open()) {
+        while(std::getline(scoresRead, get_scores)) {
+            gotoxy(41, 13 + i);
+            std::cout << get_scores;
+            i++;
+        }
+    }
+
+    scoresRead.close();
 }

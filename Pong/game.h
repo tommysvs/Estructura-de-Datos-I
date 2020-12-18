@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <fstream>
+#include <ctime>
 #include "rlutil.h"
 #include "keyboard.h"
 #include "score.h"
@@ -28,6 +31,7 @@ class Game {
     private:
         bool left_won, right_won;
         std::vector<std::string> record;
+        std::vector<std::string> backwards;
 
     public:
         Game () {
@@ -41,6 +45,7 @@ class Game {
         void game_lose();
         void save_scores();
         void read_scores();
+        std::string get_date();
         
         void draw_line() {
             int i;

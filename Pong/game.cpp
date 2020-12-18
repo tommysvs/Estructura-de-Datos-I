@@ -1,4 +1,3 @@
-#include <fstream>
 #include "game.h"
 
 static GAMESTATE state;
@@ -120,7 +119,7 @@ void Game::game_start() {
             b.move(left, right);
         }
         
-        if(c > 15000)
+        if(c > 14000)
             c = 0;
 
         if(s1.get_left() == 3)
@@ -136,7 +135,7 @@ void Game::game_start() {
     rec.n_left = "LEFT";
     rec.n_right = "RIGHT";
 
-    std::string record_s = rec.n_left + " " + std::to_string(rec.score_left) + " - " + std::to_string(rec.score_right) + " " + rec.n_right;
+    std::string record_s = rec.n_left + " " + std::to_string(rec.score_left) + " - " + std::to_string(rec.score_right) + " " + rec.n_right + " | " + get_date();
     if(record.empty()) {
         record.push_back(record_s);
     }
@@ -202,14 +201,38 @@ void Game::read_scores() {
 
     std::string get_scores;
 
-    int i = 0;
     if(scoresRead.is_open()) {
         while(std::getline(scoresRead, get_scores)) {
-            gotoxy(41, 13 + i);
-            std::cout << get_scores;
-            i++;
+            backwards.push_back(get_scores);
         }
     }
 
+    std::reverse(backwards.begin(), backwards.end());
+
+    std::vector<std::string>::iterator it;
+    int i = 0;
+    for(it = backwards.begin(); it != backwards.end(); ++it) {
+        gotoxy(31, 13 + i);
+        std::cout << backwards.at(i);;
+        i++;
+    }
+
     scoresRead.close();
+}
+
+std::string Game::get_date() {
+    time_t tt;
+    time(&tt);
+    tm TM = *localtime( &tt );
+
+    std::vector<std::string> months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
+    int year = TM.tm_year + 1900;
+    int month = TM.tm_mon;
+    int day = TM.tm_mday;
+
+    std::string date;
+    date = months[month] + " " + std::to_string(day) + " " + std::to_string(year);
+
+    return date;
 }
